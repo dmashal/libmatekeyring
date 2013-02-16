@@ -53,7 +53,8 @@ fatal_handler (gpointer unused, int unknown, const gchar *msg)
 
 static int
 #if GLIB_CHECK_VERSION(2, 31, 0)
-static GMutex thread_mutex;
+static GMutex thread_init;
+#else
 glib_thread_mutex_init (void **lock)
 #endif
 {
@@ -64,28 +65,23 @@ glib_thread_mutex_init (void **lock)
 static int
 #if GLIB_CHECK_VERSION(2, 31, 0)
 static GMutex thread_destroy;
+#else
 glib_thread_mutex_destroy (void **lock)
-#endif
+
 {
 	g_mutex_free (*lock);
 	return 0;
 }
 
 static int
-#if GLIB_CHECK_VERSION(2, 31, 0)
-static GMutex thread_lock;
 glib_thread_mutex_lock (void **lock)
-#endif
 {
 	g_mutex_lock (*lock);
 	return 0;
 }
 
 static int
-#if GLIB_CHECK_VERSION(2, 31, 0)
-static GMutex thread_unlock;
 glib_thread_mutex_unlock (void **lock)
-#endif
 {
 	g_mutex_unlock (*lock);
 	return 0;
